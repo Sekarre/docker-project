@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,22 +21,21 @@ public class FibonacciService {
     private final FibonacciRecordRepository fibonacciRecordRepository;
 
     public Long calculateFibonacciValue(Integer n) {
-        if (n <= 1) return Long.valueOf(n);
+        if (n <= 1) {
+            saveFibonacciHistory(Long.valueOf(n), n);
+            return Long.valueOf(n);
+        }
 
-        BigInteger previous = BigInteger.ZERO, next = BigInteger.ONE, sum;
+        long previous = 0L, next = 1L, sum;
 
         for (int i = 2; i <= n; i++) {
             sum = previous;
             previous = next;
-            next = sum.add(previous);
+            next = sum + previous;
         }
 
-        fibonacciRecordRepository.save(FibonacciRecord.builder()
-                .n(n)
-                .result(next.longValue())
-                .build());
-
-        return next.longValue();
+        saveFibonacciHistory(next, n);
+        return next;
     }
 
     public List<FibonacciHistoryDTO> getFibonacciValueHistory() {
@@ -49,5 +47,12 @@ public class FibonacciService {
                         .result(record.getResult())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private void saveFibonacciHistory(Long value, Integer n) {
+        fibonacciRecordRepository.save(FibonacciRecord.builder()
+                .n(n)
+                .result(value)
+                .build());
     }
 }
