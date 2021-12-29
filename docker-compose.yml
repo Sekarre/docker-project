@@ -1,0 +1,56 @@
+version: '3'
+services: 
+    fib-eureka-server:
+        depends_on:
+            - fib-config-server
+        build:
+            context: ./eureka
+            dockerfile: Dockerfile.dev
+        ports:
+        - '8761:8761'
+    fib-server:
+        depends_on:
+            - fib-db
+            - fib-config-server
+        build:
+            context: ./fibonacci
+            dockerfile: Dockerfile.dev
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://fib-eureka-server:8761/eureka
+            - SPRING_CLOUD_CONFIG_URI=http://fib-config-server:8888
+    fib-config-server:
+        build:
+            context: ./config
+            dockerfile: Dockerfile.dev
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://fib-eureka-server:8761/eureka
+            - SPRING_DATASOURCE_URL=jdbc:postgres://fib-db:5432/fib
+            - SPRING_DATASOURCE_USERNAME=postgres
+            - SPRING_DATASOURCE_PASSWORD=password
+    fib-gateway:
+        depends_on:
+            - fib-config-server
+        build:
+            context: ./gateway
+            dockerfile: Dockerfile.dev
+        ports:
+            - '8080:8080'
+        environment:
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://fib-eureka-server:8761/eureka
+    fib-db:
+        image: 'postgres:latest'
+        environment:
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=fib
+    fib-frontend:
+        stdin_open: true
+        build: 
+            context: ./fibonacci-front
+            dockerfile: Dockerfile.dev
+        volumes:
+            - /app/node_modules
+            - ./fibonacci-front:/app
+        ports:
+            - '4200:4200'
+        
