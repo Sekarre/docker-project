@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {FibonacciResponse} from "../domain/FibonacciResponse";
 import {FibonacciHistory} from "../domain/FibonacciHistory";
+import {environment} from "../../../environments/environment.prod";
 
 @Component({
   selector: 'app-calculator',
@@ -11,8 +12,8 @@ import {FibonacciHistory} from "../domain/FibonacciHistory";
 })
 export class CalculatorComponent implements OnInit {
 
-  calculateURL = "http://localhost:8080/api/fibonacci?n=";
-  calculateHistoryURL = "http://localhost:8080/api/fibonacci-history";
+  calculateURL = environment.appUrl + '/fibonacci?n=';
+  calculateHistoryURL = environment.appUrl + '/fibonacci-history';
   calculatorFormGroup: FormGroup;
 
   fibonacciResponse: FibonacciResponse;
