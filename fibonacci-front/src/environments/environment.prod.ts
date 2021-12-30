@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  appUrl: 'http://fib-gateway:8080/api'
+  appUrl: 'http://localhost:8080/api'
 };
