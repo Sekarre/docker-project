@@ -1,15 +1,12 @@
-# docker-project
-
 # Dokumentacja
 
-Schemat aplikacji
------------------
+**Schemat aplikacji**
 
 Frontend został stworzony w frameworku Angular, backend w Javie z użyciem frameworka Spring.
 
+![diagram](./img/diagram.png)
 
-
-Krótki opis działania aplikacji po stronie backendowej:
+**Krótki opis działania aplikacji po stronie backendowej:**
 
 *   _Spring Config Server_ - odpowiedzialny za dostarczanie konfiguracji dla każdego z mikroserwisów.
 *   _Spring Eureka Server_ - odpowiedzialny za wyszukiwanie, rejestrowanie i organizacje pracy wszystkich podłączonych mikroserwisów
@@ -22,6 +19,16 @@ Wszystkie serwisy pobierają swoją konfiguracje z mikroserwisu _Spring Config S
 # Uruchomienie
 
 Należy pobrać repozytorium, wejść do głównego folderu i otworzyć w nim okno konsoli. Następnie należy użyć polecenia:  
-<br/>docker compose up --build <br/>
+<br/>_docker compose up --build_ <br/>
 
 Aplikacja dostępna jest pod adresem: http://localhost:4200
+<br/><br/>
+Potwierdzenia działania aplikacji:
+
+![d1](./img/dziala_1.PNG)
+
+![d2](./img/dziala_2.PNG)
+
+![d3](./img/dziala_3.PNG)
+
+![d4](./img/dziala_4.PNG)
